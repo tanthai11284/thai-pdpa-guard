@@ -1,6 +1,6 @@
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, renameSync, mkdtempSync, rmSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { existsSync, mkdirSync, renameSync, mkdtempSync, rmSync, writeFileSync, copyFileSync } from 'node:fs';
+import { join, dirname, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -44,10 +44,20 @@ function shoot(htmlFile, width, height, out, transparent, upscale = false) {
   console.log(out.slice(ROOT.length + 1));
 }
 
+const fromIdx = process.argv.indexOf('--from');
+const source = fromIdx > -1 ? resolve(process.argv[fromIdx + 1]) : join(STORE, 'icon.svg');
+if (!existsSync(source)) {
+  console.error(`source not found: ${source}`);
+  process.exit(1);
+}
+const frame = join(STORE, 'icon-frame.html');
+writeFileSync(frame, `<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}img{display:block;width:100vw;height:100vh;object-fit:contain}</style></head><body><img src="${pathToFileURL(source).href}" alt=""></body></html>`);
+
 mkdirSync(ASSETS, { recursive: true });
 for (const s of SIZES) {
   const tmp = join(STORE, `icon-${s}.tmp.png`);
-  shoot(join(STORE, 'icon-frame.html'), s, s, tmp, true, true);
+  shoot(frame, s, s, tmp, true, true);
   renameSync(tmp, join(ASSETS, `icon-${s}.png`));
 }
+if (source.endsWith('.svg')) copyFileSync(source, join(STORE, 'icon.svg'));
 shoot(join(STORE, 'promo-440x280.html'), 440, 280, join(STORE, 'promo-440x280.png'), false);
