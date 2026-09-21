@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { scan, scanTail, resolveOverlaps, mergeFindings, MAX_SCAN_LENGTH } from '../src/core/scanner.js';
+import { scan, scanTail, resolveOverlaps, mergeFindings, excludePlaceholders, MAX_SCAN_LENGTH } from '../src/core/scanner.js';
 import {
   rng, synthThaiID, formatThaiID, synthMobile, synthLandline, synthEmail, synthCard,
   synthBankAccount, synthPassport, synthName, synthAddress, positiveThaiIdCorpus, negativeCorpus, longThaiText
@@ -103,6 +103,17 @@ test('mergeFindings boosts same-type overlaps, adds new spans, ignores cross-typ
     ['thai_name', 0, 0.85], ['thai_phone', 20, 0.85], ['thai_address', 40, 0.85]
   ]);
   assert.equal(base[0].confidence, 0.6);
+});
+
+test('existing placeholders are never reported, by scan or by merged extra findings', () => {
+  const text = 'ลูกค้าชื่อ[บุคคล_1] โทร [เบอร์_1] อีเมล [อีเมล_1] และ นายสมชาย ใจดี';
+  const found = scan(text);
+  assert.deepEqual(found.map((f) => f.value), ['นายสมชาย ใจดี']);
+  const extra = [
+    { type: 'thai_name', value: 'บุคคล_1', start: text.indexOf('บุคคล_1'), end: text.indexOf('บุคคล_1') + 7, confidence: 0.85, reason: 'nano' },
+    { type: 'thai_name', value: 'สมชาย ใจดี', start: text.indexOf('สมชาย'), end: text.length, confidence: 0.85, reason: 'nano' }
+  ];
+  assert.deepEqual(excludePlaceholders(text, extra).map((f) => f.value), ['สมชาย ใจดี']);
 });
 
 test('formatted thai id is not split into phone/bank/card', () => {

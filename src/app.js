@@ -1,4 +1,4 @@
-import { scanTail, mergeFindings } from './core/scanner.js';
+import { scanTail, mergeFindings, excludePlaceholders } from './core/scanner.js';
 import { AUTO_MASK_THRESHOLD } from './core/types.js';
 import { getSettings, onSettingsChanged, bumpStats } from './core/settings.js';
 import { loadSession, saveSession, mask, unmask, hasPlaceholder } from './core/mapper.js';
@@ -74,7 +74,7 @@ async function augmentWithNano(editor, text, findings) {
     if (nanoCache.size > 20) nanoCache.delete(nanoCache.keys().next().value);
     nanoCache.set(text, extra);
   }
-  extra = extra.filter((f) => settings.detectors[f.type] !== false);
+  extra = excludePlaceholders(text, extra.filter((f) => settings.detectors[f.type] !== false));
   if (!extra.length || !editor.isConnected || getText(editor) !== text || text === skippedText) return;
   const merged = mergeFindings(findings, extra);
   if (merged.length !== findings.length || merged.some((f, i) => f.confidence !== findings[i].confidence)) {

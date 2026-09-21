@@ -1,5 +1,13 @@
 import { DETECTORS } from '../detectors/index.js';
-import { SHOW_THRESHOLD } from './types.js';
+import { SHOW_THRESHOLD, PLACEHOLDER_LABELS } from './types.js';
+
+const PLACEHOLDER_RE = new RegExp(`\\\\?[\\[【]\\s*(?:${Object.values(PLACEHOLDER_LABELS).join('|')})\\s*\\\\?[_\\-\\s]?\\s*\\d+\\s*\\\\?[\\]】]`, 'g');
+
+export function excludePlaceholders(text, findings) {
+  const ranges = [...text.matchAll(PLACEHOLDER_RE)].map((m) => [m.index, m.index + m[0].length]);
+  if (!ranges.length) return findings;
+  return findings.filter((f) => !ranges.some(([a, b]) => f.start < b && f.end > a));
+}
 
 export const MAX_SCAN_LENGTH = 20000;
 export const TAIL_LENGTH = 5000;
@@ -31,7 +39,7 @@ export function scan(text, opts = {}) {
       if (f.confidence >= min) all.push(f);
     }
   }
-  return resolveOverlaps(all);
+  return resolveOverlaps(excludePlaceholders(text, all));
 }
 
 export function mergeFindings(base, extra) {
