@@ -1,0 +1,4 @@
+{
+  "lineChannelAccessToken": "ใส่ Channel access token (long-lived) จาก LINE Developers → Messaging API",
+  "lineUserId": "ใส่ Your user ID จาก LINE Developers → Basic settings (ขึ้นต้นด้วย U)"
+}

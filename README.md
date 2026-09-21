@@ -68,6 +68,30 @@ Submission checklist: [store/SUBMIT-CHECKLIST.md](./store/SUBMIT-CHECKLIST.md).
 The store needs a public URL. Push this repo to GitHub, enable Pages (Settings → Pages →
 Deploy from branch `main`, folder `/`), then use `https://<user>.github.io/thai-pdpa-guard/PRIVACY`.
 
+### Daily site monitor (outside the extension)
+
+`scripts/monitor.js` opens each supported site in a dedicated Chrome profile via the
+DevTools Protocol, checks that the editor and send button the extension relies on still
+match `src/sites/index.js`, and pushes a LINE message (✅ every day, 🚨 when a site
+changed, ⚠️ when the profile needs a fresh login). No message = the monitor or the PC is
+down. This script lives in `scripts/` and is never shipped; the extension itself still
+makes no network requests.
+
+```bash
+node scripts/monitor.js --login
+```
+Log in to ChatGPT, Claude and Gemini in the window that opens, then close it (once).
+
+```bash
+node scripts/monitor.js
+```
+Copy `monitor.config.example.json` to `monitor.config.json` with your LINE Messaging API
+channel access token and user ID to enable the LINE push. Schedule it daily at 09:00:
+
+```bash
+powershell -ExecutionPolicy Bypass -File scripts/monitor-install.ps1
+```
+
 ### Load unpacked
 
 1. Open `chrome://extensions`
