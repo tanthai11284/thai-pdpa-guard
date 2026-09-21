@@ -26,6 +26,8 @@ const nanoCache = new Map();
 const nanoInflight = new Set();
 const NANO_MAX_CHARS = 6000;
 const NANO_STATUS_INTERVAL_MS = 60000;
+const NANO_RECHECK_MS = 10000;
+let nanoLastCheck = 0;
 
 async function getTabId() {
   try {
@@ -53,7 +55,9 @@ function runScan(editor) {
 }
 
 async function augmentWithNano(editor, text, findings) {
-  if (!nanoReady || !settings.useNano) return;
+  if (!settings.useNano) return;
+  if (!nanoReady && Date.now() - nanoLastCheck > NANO_RECHECK_MS) await refreshNanoStatus();
+  if (!nanoReady) return;
   if (settings.detectors.thai_name === false && settings.detectors.thai_address === false) return;
   if (nanoInflight.has(text)) return;
   let extra = nanoCache.get(text);
@@ -232,6 +236,7 @@ function observe() {
 }
 
 async function refreshNanoStatus() {
+  nanoLastCheck = Date.now();
   if (!settings.useNano) { nanoReady = false; return; }
   try {
     const res = await chrome.runtime.sendMessage({ type: 'nano:status' });
