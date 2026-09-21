@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>Thai PDPA Guard — playground</title>
+  <link rel="stylesheet" href="/src/ui/overlay.css">
+  <style>
+    body { font: 15px system-ui, "Noto Sans Thai", sans-serif; max-width: 760px; margin: 40px auto; padding: 0 16px; }
+    textarea { width: 100%; min-height: 90px; font: inherit; }
+    .ce { border: 1px solid #999; border-radius: 8px; padding: 10px; min-height: 60px; white-space: pre-wrap; }
+    .reply { background: #f3f4f6; padding: 10px; border-radius: 8px; margin-top: 12px; }
+    label { display: block; margin: 16px 0 6px; font-weight: 600; }
+    button { margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Playground</h1>
+  <p>โหมด: <select id="mode"><option value="warn">warn</option><option value="auto">auto</option><option value="block">block</option></select></p>
+
+  <label for="ta">textarea</label>
+  <form id="f"><textarea id="ta"></textarea><button type="submit" aria-label="Send message">ส่ง</button></form>
+
+  <label>contenteditable (ProseMirror-like)</label>
+  <div class="ce ProseMirror" contenteditable="true" role="textbox"></div>
+
+  <button id="reply">จำลองคำตอบ AI (streaming)</button>
+  <div id="log" class="reply" aria-live="polite"></div>
+
+  <script>
+    const store = { local: {}, session: {} };
+    const messages = {};
+    window.chrome = {
+      i18n: { getMessage: (k, subs) => (messages[k]?.message ?? k).replace('$COUNT$', subs?.[0] ?? '') },
+      runtime: {
+        getURL: (p) => '/' + p,
+        sendMessage: async (m) => (m.type === 'getTabId' ? { tabId: 7 } : { ok: true })
+      },
+      storage: {
+        local: { get: async (k) => ({ ...store.local }), set: async (o) => Object.assign(store.local, o) },
+        session: { get: async (k) => ({ ...store.session }), set: async (o) => Object.assign(store.session, o), remove: async () => {} },
+        onChanged: { addListener: (fn) => { window.__settingsListener = fn; } }
+      }
+    };
+    fetch('/_locales/th/messages.json').then((r) => r.json()).then((m) => Object.assign(messages, m));
+    document.getElementById('mode').addEventListener('change', (e) => {
+      store.local.settings = { ...(store.local.settings ?? {}), mode: e.target.value };
+      window.__settingsListener?.({ settings: { newValue: store.local.settings } }, 'local');
+    });
+    document.getElementById('f').addEventListener('submit', (e) => {
+      e.preventDefault();
+      document.getElementById('log').textContent = 'ส่งแล้ว: ' + document.getElementById('ta').value;
+    });
+    document.getElementById('reply').addEventListener('click', () => {
+      const text = 'แนะนำให้ติดต่อ[บุคคล_1] ที่ [เบอร์_1] เพื่อยืนยัน [บัตรปชช_1] และส่งไปที่ [อีเมล_1] ครับ';
+      const log = document.getElementById('log');
+      log.textContent = '';
+      let i = 0;
+      const iv = setInterval(() => { log.textContent = text.slice(0, i += 6); if (i >= text.length) clearInterval(iv); }, 40);
+    });
+  </script>
+  <script src="/src/content.js"></script>
+</body>
+</html>

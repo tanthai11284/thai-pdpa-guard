@@ -1,0 +1,77 @@
+# Thai PDPA Guard
+
+Chrome extension (Manifest V3) that detects Thai personal data in AI chat inputs
+(ChatGPT, Claude, Gemini), masks it with meaningful placeholders before you send,
+and unmasks the AI's reply automatically.
+
+**Single purpose:** ตรวจจับและปิดบังข้อมูลส่วนบุคคลของไทยในกล่องข้อความก่อนผู้ใช้กดส่ง
+
+Everything runs on-device. The codebase contains no network requests.
+
+## Detected types
+
+| type | description |
+|---|---|
+| `thai_id` | Thai national ID / tax ID (13 digits, mod-11 checksum + context scoring) |
+| `thai_phone` | Thai mobile and landline numbers |
+| `email` | Email addresses |
+| `credit_card` | Credit cards (Luhn + brand prefix) |
+| `bank_account` | Thai bank account numbers (requires bank/account context) |
+| `thai_plate` | Thai license plates (requires context) |
+| `thai_address` | Thai addresses (ตำบล/อำเภอ/จังหวัด/postcode signals) |
+| `thai_name` | Thai person names (title + name words) |
+| `passport` | Passport numbers (requires context) |
+
+## Development
+
+Requires Node.js 20+. No runtime dependencies.
+
+```bash
+npm test
+```
+
+```bash
+npm run lint
+```
+
+```bash
+npm run icons
+```
+
+### Playground (no extension needed)
+
+Serves `dev/playground.html` with a stubbed `chrome.*` API so the overlay, mask and
+unmask flow can be exercised in any browser. Do not include `dev/` or `scripts/` in the
+store package.
+
+```bash
+node scripts/dev-server.js
+```
+
+### Load unpacked
+
+1. Open `chrome://extensions`
+2. Enable Developer mode
+3. Load unpacked → select this folder
+
+## Layout
+
+```
+manifest.json
+sw.js                  service worker: settings defaults, session map cleanup
+src/content.js         content script loader (imports src/app.js as an ES module)
+src/app.js             content script logic: scan, overlay, mask, unmask, modes
+src/core/              scanner, mapper, settings, types
+src/detectors/         one file per data type + registry
+src/ai/nano.js         Gemini Nano adapter (optional layer)
+src/ui/                overlay
+src/sites/             per-site DOM adapters
+src/data/              Thai dictionaries (provinces, titles, banks)
+popup/  options/       extension pages
+_locales/              th + en
+test/                  node:test suites + synthetic fixtures
+```
+
+## Privacy
+
+See [PRIVACY.md](./PRIVACY.md).
