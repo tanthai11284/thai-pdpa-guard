@@ -34,6 +34,9 @@ npm test
 npm run lint
 ```
 
+Renders `store/icon.svg` to `assets/icon-*.png` and the promo tile with headless Chrome
+(needs Chrome installed; set `CHROME_PATH` if it is not in the default location):
+
 ```bash
 npm run icons
 ```
@@ -41,12 +44,29 @@ npm run icons
 ### Playground (no extension needed)
 
 Serves `dev/playground.html` with a stubbed `chrome.*` API so the overlay, mask and
-unmask flow can be exercised in any browser. Do not include `dev/` or `scripts/` in the
-store package.
+unmask flow can be exercised in any browser. `npm run pack` excludes `dev/`, `scripts/`,
+`store/` and `test/` automatically.
 
 ```bash
 node scripts/dev-server.js
 ```
+
+### Build for the store
+
+Runs lint + tests, then writes `dist/thai-pdpa-guard-<version>.zip` containing only
+shipped files (`manifest.json`, `sw.js`, `src/`, `popup/`, `options/`, `_locales/`, `assets/`).
+
+```bash
+npm run pack
+```
+
+Listing copy, permission justifications and screenshot plan: [store/LISTING.md](./store/LISTING.md).
+Submission checklist: [store/SUBMIT-CHECKLIST.md](./store/SUBMIT-CHECKLIST.md).
+
+### Publish privacy policy
+
+The store needs a public URL. Push this repo to GitHub, enable Pages (Settings → Pages →
+Deploy from branch `main`, folder `/`), then use `https://<user>.github.io/thai-pdpa-guard/PRIVACY`.
 
 ### Load unpacked
 

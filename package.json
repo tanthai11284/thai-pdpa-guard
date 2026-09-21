@@ -1,13 +1,14 @@
 {
   "name": "thai-pdpa-guard",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "Chrome extension that detects and masks Thai personal data in AI chat inputs before sending. 100% on-device.",
   "scripts": {
     "test": "node --test \"test/**/*.test.js\"",
     "lint": "node scripts/lint.js",
-    "icons": "node scripts/make-icons.js"
+    "icons": "node scripts/make-icons.js",
+    "pack": "npm run lint && npm test && node scripts/pack.js"
   },
   "engines": {
     "node": ">=20"
