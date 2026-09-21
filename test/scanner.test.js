@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { scan, scanTail, resolveOverlaps, MAX_SCAN_LENGTH } from '../src/core/scanner.js';
+import { scan, scanTail, resolveOverlaps, mergeFindings, MAX_SCAN_LENGTH } from '../src/core/scanner.js';
 import {
   rng, synthThaiID, formatThaiID, synthMobile, synthLandline, synthEmail, synthCard,
   synthBankAccount, synthPassport, synthName, synthAddress, positiveThaiIdCorpus, negativeCorpus, longThaiText
@@ -86,6 +86,23 @@ test('overlap resolution keeps higher confidence, then longer span', () => {
     { type: 'd', start: 20, end: 30, confidence: 0.7 }
   ]);
   assert.deepEqual(kept.map((f) => f.type), ['b', 'd']);
+});
+
+test('mergeFindings boosts same-type overlaps, adds new spans, ignores cross-type overlaps', () => {
+  const base = [
+    { type: 'thai_name', value: 'นายสมชาย', start: 0, end: 8, confidence: 0.6 },
+    { type: 'thai_phone', value: '0812345678', start: 20, end: 30, confidence: 0.85 }
+  ];
+  const extra = [
+    { type: 'thai_name', value: 'นายสมชาย ใจดี', start: 0, end: 13, confidence: 0.85, reason: 'nano' },
+    { type: 'thai_name', value: '0812345678', start: 20, end: 30, confidence: 0.85, reason: 'nano' },
+    { type: 'thai_address', value: 'ที่อยู่', start: 40, end: 47, confidence: 0.85, reason: 'nano' }
+  ];
+  const merged = mergeFindings(base, extra);
+  assert.deepEqual(merged.map((f) => [f.type, f.start, f.confidence]), [
+    ['thai_name', 0, 0.85], ['thai_phone', 20, 0.85], ['thai_address', 40, 0.85]
+  ]);
+  assert.equal(base[0].confidence, 0.6);
 });
 
 test('formatted thai id is not split into phone/bank/card', () => {

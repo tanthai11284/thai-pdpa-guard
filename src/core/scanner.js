@@ -34,6 +34,21 @@ export function scan(text, opts = {}) {
   return resolveOverlaps(all);
 }
 
+export function mergeFindings(base, extra) {
+  const out = base.map((f) => ({ ...f }));
+  const added = [];
+  for (const e of extra) {
+    const overlapping = out.filter((f) => e.start < f.end && e.end > f.start);
+    if (!overlapping.length) { added.push(e); continue; }
+    const sameType = overlapping.find((f) => f.type === e.type);
+    if (sameType && e.confidence > sameType.confidence) {
+      sameType.confidence = e.confidence;
+      sameType.reason = `${sameType.reason}+${e.reason}`;
+    }
+  }
+  return resolveOverlaps([...out, ...added]);
+}
+
 export function scanTail(text, opts) {
   if (text.length <= MAX_SCAN_LENGTH) return scan(text, opts);
   const offset = text.length - TAIL_LENGTH;

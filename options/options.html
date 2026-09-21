@@ -24,7 +24,9 @@
   <fieldset>
     <legend>Gemini Nano</legend>
     <label><input type="checkbox" id="useNano"> <span data-i18n="nanoLabel"></span></label>
-    <p id="nanoStatus" class="note"></p>
+    <p class="note"><span data-i18n="nanoStatusLabel"></span>: <strong id="nanoStatus" role="status" aria-live="polite"></strong></p>
+    <button type="button" id="nanoWarmUp" data-i18n="nanoWarmUp" hidden></button>
+    <progress id="nanoProgress" max="1" value="0" hidden></progress>
   </fieldset>
 
   <p id="status" role="status" aria-live="polite"></p>

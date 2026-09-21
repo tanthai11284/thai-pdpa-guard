@@ -1,4 +1,4 @@
-import { scanTail } from './core/scanner.js';
+import { scanTail, mergeFindings } from './core/scanner.js';
 import { AUTO_MASK_THRESHOLD } from './core/types.js';
 import { getSettings, onSettingsChanged, bumpStats } from './core/settings.js';
 import { loadSession, saveSession, mask, unmask, hasPlaceholder } from './core/mapper.js';
@@ -21,6 +21,11 @@ let blocked = false;
 let scanTimer = 0;
 let unmaskTimer = 0;
 let lastInputWasPaste = false;
+let nanoReady = false;
+const nanoCache = new Map();
+const nanoInflight = new Set();
+const NANO_MAX_CHARS = 6000;
+const NANO_STATUS_INTERVAL_MS = 60000;
 
 async function getTabId() {
   try {
@@ -43,6 +48,37 @@ function runScan(editor) {
   if (!text.trim()) { clearState(editor); return; }
   if (text === skippedText) return;
   const findings = scanTail(text, { enabled: settings.detectors });
+  present(editor, text, findings);
+  augmentWithNano(editor, text, findings);
+}
+
+async function augmentWithNano(editor, text, findings) {
+  if (!nanoReady || !settings.useNano) return;
+  if (settings.detectors.thai_name === false && settings.detectors.thai_address === false) return;
+  if (nanoInflight.has(text)) return;
+  let extra = nanoCache.get(text);
+  if (!extra) {
+    nanoInflight.add(text);
+    try {
+      const res = await chrome.runtime.sendMessage({ type: 'nano:findEntities', text: text.slice(-NANO_MAX_CHARS) });
+      extra = (res?.findings ?? []).map((f) => ({ ...f, start: f.start + Math.max(0, text.length - NANO_MAX_CHARS), end: f.end + Math.max(0, text.length - NANO_MAX_CHARS) }));
+    } catch {
+      extra = [];
+    } finally {
+      nanoInflight.delete(text);
+    }
+    if (nanoCache.size > 20) nanoCache.delete(nanoCache.keys().next().value);
+    nanoCache.set(text, extra);
+  }
+  extra = extra.filter((f) => settings.detectors[f.type] !== false);
+  if (!extra.length || !editor.isConnected || getText(editor) !== text || text === skippedText) return;
+  const merged = mergeFindings(findings, extra);
+  if (merged.length !== findings.length || merged.some((f, i) => f.confidence !== findings[i].confidence)) {
+    present(editor, text, merged);
+  }
+}
+
+function present(editor, text, findings) {
   if (!findings.length) { clearState(editor); return; }
 
   const strong = findings.filter((f) => f.confidence >= AUTO_MASK_THRESHOLD);
@@ -195,12 +231,26 @@ function observe() {
   mo.observe(document.body, { childList: true, subtree: true, characterData: true });
 }
 
+async function refreshNanoStatus() {
+  if (!settings.useNano) { nanoReady = false; return; }
+  try {
+    const res = await chrome.runtime.sendMessage({ type: 'nano:status' });
+    nanoReady = res?.status === 'ready';
+  } catch {
+    nanoReady = false;
+  }
+}
+
 async function main() {
   settings = await getSettings();
   onSettingsChanged((next) => {
     settings = { ...settings, ...next };
+    nanoCache.clear();
+    refreshNanoStatus();
     if (activeEditor) { skippedText = null; scheduleScan(activeEditor); }
   });
+  refreshNanoStatus();
+  setInterval(refreshNanoStatus, NANO_STATUS_INTERVAL_MS);
   const tabId = await getTabId();
   session = await loadSession(tabId);
   attachAll();

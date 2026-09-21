@@ -42,8 +42,43 @@ async function init() {
   nano.addEventListener('change', async () => {
     await saveSettings({ useNano: nano.checked });
     flash();
+    renderNanoStatus();
   });
-  document.getElementById('nanoStatus').textContent = settings.useNano ? '' : t('nanoOff');
+  document.getElementById('nanoWarmUp').addEventListener('click', warmUpNano);
+  chrome.runtime.onMessage.addListener((msg) => {
+    if (msg?.type === 'nano:progress') {
+      const p = document.getElementById('nanoProgress');
+      p.hidden = false;
+      p.value = msg.total ? msg.loaded / msg.total : 0;
+      document.getElementById('nanoStatus').textContent = t('nanoDownloading');
+    }
+  });
+  renderNanoStatus();
+}
+
+const STATUS_KEYS = { ready: 'nanoReady', downloadable: 'nanoDownloadable', downloading: 'nanoDownloading', unsupported: 'nanoUnsupported', off: 'nanoOff' };
+
+async function renderNanoStatus() {
+  const el = document.getElementById('nanoStatus');
+  const btn = document.getElementById('nanoWarmUp');
+  let status = 'unsupported';
+  try {
+    const res = await chrome.runtime.sendMessage({ type: 'nano:status' });
+    status = res?.status ?? 'unsupported';
+  } catch { /* service worker unavailable */ }
+  el.textContent = t(STATUS_KEYS[status] ?? 'nanoUnsupported');
+  btn.hidden = status !== 'downloadable';
+  document.getElementById('nanoProgress').hidden = status !== 'downloading';
+}
+
+async function warmUpNano() {
+  const btn = document.getElementById('nanoWarmUp');
+  btn.disabled = true;
+  document.getElementById('nanoStatus').textContent = t('nanoDownloading');
+  document.getElementById('nanoProgress').hidden = false;
+  try { await chrome.runtime.sendMessage({ type: 'nano:warmUp' }); } catch { /* ignore */ }
+  btn.disabled = false;
+  renderNanoStatus();
 }
 
 init();
