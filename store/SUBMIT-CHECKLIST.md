@@ -10,7 +10,7 @@
 - [ ] ไอคอน 128×128 `assets/icon-128.png` (อยู่ใน zip แล้ว; ต้องอัปโหลดซ้ำในช่อง Store icon)
 - [ ] ภาพหน้าจอ 1280×800 อย่างน้อย 3 ภาพ (ดู `store/LISTING.md`)
 - [ ] Promo tile 440×280 `store/promo-440x280.png`
-- [ ] Privacy policy ขึ้น URL สาธารณะแล้ว (GitHub Pages)
+- [x] Privacy policy ขึ้น URL สาธารณะแล้ว: https://tanthai11284.github.io/thai-pdpa-guard/PRIVACY
 
 ## โค้ด (ตรวจโดย `npm run lint` + มือ)
 - [x] Manifest V3

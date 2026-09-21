@@ -116,7 +116,7 @@ No, I am not using remote code.
 - [x] I do not use or transfer user data for purposes that are unrelated to my item's single purpose
 - [x] I do not use or transfer user data to determine creditworthiness or for lending purposes
 
-Privacy policy URL: `https://<github-username>.github.io/thai-pdpa-guard/PRIVACY` (ดู README ส่วน "Publish privacy policy")
+Privacy policy URL: `https://tanthai11284.github.io/thai-pdpa-guard/PRIVACY`
 
 ---
 
