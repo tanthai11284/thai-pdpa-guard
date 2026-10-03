@@ -44,4 +44,4 @@ None. There is no backend, no analytics, no telemetry.
 
 ## Contact
 
-tanthailove2012@gmail.com
+TM8 Labs — tm8labs@gmail.com
