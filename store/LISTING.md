@@ -35,7 +35,7 @@ Thai (หลัก), English
 ## คำอธิบายยาว (Description) — ไทย
 
 ```
-พนักงานไทยวางข้อมูลลูกค้าลงใน ChatGPT, Claude และ Gemini ทุกวัน — เลขบัตรประชาชน ชื่อ เบอร์โทร ที่อยู่ เลขบัญชี — โดยที่องค์กรไม่มีทางรู้ Thai PDPA Guard คือส่วนขยายตัวแรกที่เข้าใจข้อมูลส่วนบุคคลแบบไทยโดยเฉพาะ และปิดบังให้ก่อนที่ข้อความจะถูกส่งออกไป
+พนักงานไทยวางข้อมูลลูกค้าลงใน ChatGPT, Claude และ Gemini ทุกวัน — เลขบัตรประชาชน ชื่อ เบอร์โทร ที่อยู่ เลขบัญชี — โดยที่องค์กรไม่มีทางรู้ Thai PDPA Guard คือส่วนขยายที่ออกแบบมาเพื่อข้อมูลส่วนบุคคลแบบไทยโดยเฉพาะ และปิดบังให้ก่อนที่ข้อความจะถูกส่งออกไป
 
 ■ ทำอะไรได้บ้าง
 • ตรวจจับข้อมูลส่วนบุคคลขณะพิมพ์ในกล่องข้อความของ ChatGPT, Claude และ Gemini
@@ -56,13 +56,12 @@ Thai (หลัก), English
 ■ ทำไมต้องใช้
 PDPA มีโทษปรับทางปกครองสูงสุด 5,000,000 บาท และเคยมีคดีจริงที่ถูกปรับรวม 7,000,000 บาท ธุรกิจไทยจำนวนมากใช้ AI แล้วแต่ยังไม่มีนโยบายกำกับดูแล ส่วนขยายนี้เป็นมาตรการทางเทคนิคที่ DPO นำไปใช้ได้ทันทีโดยไม่ต้องเปลี่ยนวิธีทำงานของพนักงาน
 
-คำหลัก: PDPA, ข้อมูลส่วนบุคคล, เลขบัตรประชาชน, ChatGPT, ความปลอดภัยข้อมูล, DPO, Thai PII, data privacy
 ```
 
 ## คำอธิบายยาว (Description) — English
 
 ```
-Thai employees paste customer data into ChatGPT, Claude and Gemini every day — national ID numbers, names, phone numbers, addresses, bank accounts — and the organization never knows. Thai PDPA Guard is the first extension built for Thai personal data: it detects and masks it before the message leaves the text box.
+Thai employees paste customer data into ChatGPT, Claude and Gemini every day — national ID numbers, names, phone numbers, addresses, bank accounts — and the organization never knows. Thai PDPA Guard is built specifically for Thai personal data: it detects and masks it before the message leaves the text box.
 
 ■ What it does
 • Scans the chat input of ChatGPT, Claude and Gemini as you type
@@ -82,7 +81,6 @@ Thai employees paste customer data into ChatGPT, Claude and Gemini every day —
 ■ Why
 Thailand's PDPA carries administrative fines up to THB 5,000,000, and a real case has already resulted in THB 7,000,000 in combined fines. This extension is a technical safeguard a DPO can roll out today without changing how staff work.
 
-Keywords: PDPA, Thai PII, national ID, ChatGPT, data privacy, DPO, ข้อมูลส่วนบุคคล, เลขบัตรประชาชน
 ```
 
 ---

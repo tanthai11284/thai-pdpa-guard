@@ -1,0 +1,20 @@
+Thai employees paste customer data into ChatGPT, Claude and Gemini every day — national ID numbers, names, phone numbers, addresses, bank accounts — and the organization never knows. Thai PDPA Guard is built specifically for Thai personal data: it detects and masks it before the message leaves the text box.
+
+■ What it does
+• Scans the chat input of ChatGPT, Claude and Gemini as you type
+• Thai 13-digit national ID / tax ID — validated with the official mod-11 checksum, not just digit counting
+• Thai mobile and landline numbers, emails, credit cards (Luhn), Thai bank accounts, license plates, passports
+• Thai addresses (tambon / amphoe / province / postcode) and Thai names with titles
+• Masks with meaningful placeholders such as [บุคคล_1] [บัตรปชช_1] [เบอร์_1] — the AI still understands the context
+• Automatic unmask: when the reply contains [บุคคล_1], you see the real name on screen
+• 3 modes: warn (default) / auto-mask / block send until handled (for organizations)
+• Uses on-device Gemini Nano when Chrome supports it to catch names without titles — works fully without it
+
+■ Privacy
+• Everything runs on your device. The codebase contains no network calls at all.
+• The placeholder↔value table lives only in the tab's session memory and is wiped when the tab or browser closes.
+• No account, no analytics, no storage of what you type. Only counters such as "12 items masked".
+
+■ Why
+Thailand's PDPA carries administrative fines up to THB 5,000,000, and a real case has already resulted in THB 7,000,000 in combined fines. This extension is a technical safeguard a DPO can roll out today without changing how staff work.
+

@@ -42,7 +42,7 @@ files.forEach((src, i) => {
     ctx.drawImage(img, sx, sy, sw, sh, 0, 0, ${W}, ${H});
     const el = document.createElement('pre');
     el.id = 'out-' + i;
-    el.textContent = c.toDataURL('image/png');
+    el.textContent = c.toDataURL('image/jpeg', 0.92);
     document.body.appendChild(el);
   };
   img.src = src;
@@ -57,9 +57,9 @@ if (r.status !== 0) { console.error(r.stderr); process.exit(1); }
 
 mkdirSync(OUT_DIR, { recursive: true });
 inputs.forEach((src, i) => {
-  const m = r.stdout.match(new RegExp(`<pre id="out-${i}">data:image/png;base64,([^<]+)</pre>`));
+  const m = r.stdout.match(new RegExp(`<pre id="out-${i}">data:image/jpeg;base64,([^<]+)</pre>`));
   if (!m) { console.error(`no output for ${basename(src)}`); process.exit(1); }
-  const out = join(OUT_DIR, `screenshot-${i + 1}.png`);
+  const out = join(OUT_DIR, `screenshot-${i + 1}.jpg`);
   writeFileSync(out, Buffer.from(m[1], 'base64'));
   console.log(`${basename(src)} -> ${out.slice(ROOT.length + 1)}`);
 });
