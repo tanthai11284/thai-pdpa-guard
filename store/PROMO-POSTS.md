@@ -2,7 +2,7 @@
 
 ลิงก์ติดตั้ง: https://chromewebstore.google.com/detail/lhijhhodcnaaofgkibihakkdebkipphh
 หน้าเว็บ: https://pdpa.tm8labs.com/
-คลิป: แนวตั้ง `store/video/thai-pdpa-guard-demo-9x16.mp4` · แนวนอน https://youtu.be/jrnNpIqK8Tk
+คลิป: แนวตั้ง `store/video/thai-pdpa-guard-demo-9x16.mp4` · แนวนอน https://youtu.be/SPNXbfJ4g_8
 
 กติกา: ห้ามขอรีวิวแลกของ ห้ามรีวิวเอง ห้ามให้คนที่ไม่ได้ใช้จริงรีวิว (ผิดนโยบาย Chrome Web Store)
 
