@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<!-- ภาพสโตร์ 1280x800: แถบคำบรรยาย + ภาพเดิมที่ซูมเฉพาะส่วนสำคัญ
+     ใช้: screenshot-frame.html?img=screenshots/1-detect.jpg&crop=270,300,810,185&step=1&title=...&sub=... -->
+<style>
+  html, body { margin: 0; width: 1280px; height: 800px; overflow: hidden; }
+  body {
+    font-family: "Segoe UI", "Noto Sans Thai", "Leelawadee UI", system-ui, sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+    color: #fff; display: flex; flex-direction: column;
+  }
+  header { display: flex; align-items: center; gap: 26px; padding: 40px 56px 0; height: 150px; box-sizing: border-box; }
+  .step { flex: none; width: 76px; height: 76px; border-radius: 50%; background: #fbbf24; color: #1e3a8a;
+          font-size: 44px; font-weight: 800; display: grid; place-items: center; }
+  h1 { font-size: 50px; margin: 0; line-height: 1.15; letter-spacing: -.3px; }
+  p { margin: 6px 0 0; font-size: 26px; color: #dbeafe; font-weight: 600; }
+  main { flex: 1; display: grid; place-items: center; padding: 0 40px 40px; }
+  .shot { border-radius: 18px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.55); border: 2px solid rgba(255,255,255,.12);
+          background-repeat: no-repeat; }
+  .brand { position: absolute; right: 30px; bottom: 16px; font-size: 18px; color: rgba(219,234,254,.7); font-weight: 600; }
+</style>
+</head>
+<body>
+  <header>
+    <div class="step" id="step"></div>
+    <div><h1 id="title"></h1><p id="sub"></p></div>
+  </header>
+  <main><div class="shot" id="shot"></div></main>
+  <div class="brand">Thai PDPA Guard · ทำงานในเครื่อง 100%</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  document.getElementById('step').textContent = q.get('step') || '';
+  document.getElementById('title').textContent = q.get('title') || '';
+  document.getElementById('sub').textContent = q.get('sub') || '';
+  const [x, y, w, h] = (q.get('crop') || '0,0,1280,800').split(',').map(Number);
+  // ขนาดพื้นที่ภาพสูงสุด 1200x570 ซูมเท่าที่พอดี
+  const s = Math.min(1200 / w, 570 / h);
+  const el = document.getElementById('shot');
+  el.style.width = w * s + 'px';
+  el.style.height = h * s + 'px';
+  el.style.backgroundImage = `url("${q.get('img')}")`;
+  el.style.backgroundSize = `${1280 * s}px ${800 * s}px`;
+  el.style.backgroundPosition = `${-x * s}px ${-y * s}px`;
+</script>
+</body>
+</html>
