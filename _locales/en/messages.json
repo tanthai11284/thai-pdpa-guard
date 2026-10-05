@@ -1,9 +1,9 @@
 {
   "extName": {
-    "message": "Thai PDPA Guard"
+    "message": "Thai PDPA Guard – Mask personal data before AI chat"
   },
   "extDesc": {
-    "message": "Masks Thai ID numbers, names, phones and addresses before you send to ChatGPT, Claude or Gemini, then restores replies. On-device."
+    "message": "Masks Thai IDs, names, phones and addresses before you send to ChatGPT, Claude or Gemini, and restores them in replies. On-device."
   },
   "foundItems": {
     "message": "Found $COUNT$ personal data item(s)",
@@ -197,5 +197,8 @@
   },
   "welcomeHelp": {
     "message": "Help & contact"
+  },
+  "brandName": {
+    "message": "Thai PDPA Guard"
   }
 }

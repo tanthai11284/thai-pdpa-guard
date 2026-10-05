@@ -1,9 +1,9 @@
 {
   "extName": {
-    "message": "Thai PDPA Guard"
+    "message": "Thai PDPA Guard – ปิดบังข้อมูลส่วนบุคคลก่อนส่ง AI"
   },
   "extDesc": {
-    "message": "ปิดบังเลขบัตรประชาชน ชื่อ เบอร์ ที่อยู่ ก่อนส่งให้ ChatGPT, Claude, Gemini แล้วถอดกลับในคำตอบให้ ทำงานในเครื่อง 100%"
+    "message": "ปิดบังเลขบัตรประชาชน ชื่อ เบอร์ ที่อยู่ ก่อนส่งให้ ChatGPT, Claude, Gemini แล้วแสดงค่าจริงในคำตอบ ทำงานในเครื่อง 100%"
   },
   "foundItems": {
     "message": "พบข้อมูลส่วนบุคคล $COUNT$ รายการ",
@@ -197,5 +197,8 @@
   },
   "welcomeHelp": {
     "message": "วิธีใช้และติดต่อ"
+  },
+  "brandName": {
+    "message": "Thai PDPA Guard"
   }
 }

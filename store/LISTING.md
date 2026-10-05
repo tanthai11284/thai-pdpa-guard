@@ -7,19 +7,19 @@
 ## ชื่อ (Name)
 
 ```
-Thai PDPA Guard — ปิดบังข้อมูลส่วนบุคคลก่อนส่งให้ AI
+Thai PDPA Guard – ปิดบังข้อมูลส่วนบุคคลก่อนส่ง AI
 ```
 
 ## คำอธิบายสั้น (Summary) — ≤ 132 ตัวอักษร
 
-ไทย (116 ตัวอักษร):
+ไทย (117 ตัวอักษร):
 ```
-ปิดบังเลขบัตรประชาชน ชื่อ เบอร์ ที่อยู่ ก่อนส่งให้ ChatGPT, Claude, Gemini แล้วถอดกลับในคำตอบให้ ทำงานในเครื่อง 100%
+ปิดบังเลขบัตรประชาชน ชื่อ เบอร์ ที่อยู่ ก่อนส่งให้ ChatGPT, Claude, Gemini แล้วแสดงค่าจริงในคำตอบ ทำงานในเครื่อง 100%
 ```
 
 English (130 chars):
 ```
-Masks Thai ID numbers, names, phones and addresses before you send to ChatGPT, Claude or Gemini, then restores replies. On-device.
+Masks Thai IDs, names, phones and addresses before you send to ChatGPT, Claude or Gemini, and restores them in replies. On-device.
 ```
 
 ## หมวดหมู่ (Category)
