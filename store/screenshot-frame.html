@@ -18,7 +18,7 @@
   p { margin: 6px 0 0; font-size: 26px; color: #dbeafe; font-weight: 600; }
   main { flex: 1; display: grid; place-items: center; padding: 0 40px 40px; }
   .shot { border-radius: 18px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.55); border: 2px solid rgba(255,255,255,.12);
-          background-repeat: no-repeat; }
+          background-repeat: no-repeat; background-clip: padding-box; background-color: #000; }
   .brand { position: absolute; right: 30px; bottom: 16px; font-size: 18px; color: rgba(219,234,254,.7); font-weight: 600; }
 </style>
 </head>
@@ -40,9 +40,22 @@
   const el = document.getElementById('shot');
   el.style.width = w * s + 'px';
   el.style.height = h * s + 'px';
-  el.style.backgroundImage = `url("${q.get('img')}")`;
-  el.style.backgroundSize = `${1280 * s}px ${800 * s}px`;
-  el.style.backgroundPosition = `${-x * s}px ${-y * s}px`;
+  // ใช้ขนาดจริงของภาพต้นฉบับ (ภาพแคปใหม่ไม่ใช่ 1280x800)
+  const src = new Image();
+  src.onload = () => {
+    el.style.backgroundImage = `url("${src.src}")`;
+    el.style.backgroundSize = `${src.naturalWidth * s}px ${src.naturalHeight * s}px`;
+    el.style.backgroundPosition = `${-x * s}px ${-y * s}px`;
+  };
+  src.src = q.get('img');
+  // cover=x,y,w,h;... ทาสีพื้นทับเศษข้อความของเว็บที่โดนตัดครึ่งตรงขอบ (พิกัดภาพต้นฉบับ)
+  el.style.position = 'relative';
+  (q.get('cover') || '').split(';').filter(Boolean).forEach((r) => {
+    const [cx, cy, cw, ch] = r.split(',').map(Number);
+    const d = document.createElement('div');
+    d.style.cssText = `position:absolute;background:${q.get('coverColor') || '#000'};left:${(cx - x) * s}px;top:${(cy - y) * s}px;width:${cw * s}px;height:${ch * s}px`;
+    el.appendChild(d);
+  });
 </script>
 </body>
 </html>
