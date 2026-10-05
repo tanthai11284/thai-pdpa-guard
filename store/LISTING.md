@@ -12,14 +12,14 @@ Thai PDPA Guard — ปิดบังข้อมูลส่วนบุคค
 
 ## คำอธิบายสั้น (Summary) — ≤ 132 ตัวอักษร
 
-ไทย (98 ตัวอักษร):
+ไทย (116 ตัวอักษร):
 ```
-ตรวจจับเลขบัตรประชาชน เบอร์โทร ชื่อ ที่อยู่แบบไทย แล้วปิดบังก่อนส่งให้ ChatGPT ทำงานในเครื่อง 100%
+ปิดบังเลขบัตรประชาชน ชื่อ เบอร์ ที่อยู่ ก่อนส่งให้ ChatGPT, Claude, Gemini แล้วถอดกลับในคำตอบให้ ทำงานในเครื่อง 100%
 ```
 
-English (111 chars):
+English (130 chars):
 ```
-Detects Thai ID numbers, phones, names and addresses and masks them before you send to ChatGPT. 100% on-device.
+Masks Thai ID numbers, names, phones and addresses before you send to ChatGPT, Claude or Gemini, then restores replies. On-device.
 ```
 
 ## หมวดหมู่ (Category)

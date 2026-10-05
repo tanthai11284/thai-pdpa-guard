@@ -3,7 +3,7 @@
     "message": "Thai PDPA Guard"
   },
   "extDesc": {
-    "message": "Detects Thai ID numbers, phones, names and addresses and masks them before you send to ChatGPT. 100% on-device."
+    "message": "Masks Thai ID numbers, names, phones and addresses before you send to ChatGPT, Claude or Gemini, then restores replies. On-device."
   },
   "foundItems": {
     "message": "Found $COUNT$ personal data item(s)",
