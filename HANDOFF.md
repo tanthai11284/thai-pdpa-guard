@@ -40,8 +40,9 @@
 - คลิปเดโม 30 วิ: `store/video/thai-pdpa-guard-demo-16x9.mp4`, `…-9x16.mp4`, YouTube `jrnNpIqK8Tk`
 - GitHub repo + GitHub Pages privacy (ยังใช้อยู่)
 
+- **การแก้หน้าสโตร์ผ่านรีวิวแล้ว (ตรวจหน้าสโตร์สาธารณะ 5 ต.ค.)**: privacy URL = pdpa.tm8labs.com/privacy/ ✅ · วิดีโอ YouTube ✅ · ลิงก์ "หน้าแรก" pdpa.tm8labs.com ไม่พบในหน้าสโตร์ (ลิงก์สนับสนุนยังเป็น GitHub issues) → ให้ผู้ใช้เช็กใน Dashboard
+
 ### ⏳ รอ
-- **การแก้หน้าสโตร์** (privacy URL → pdpa.tm8labs.com/privacy/, หน้าแรก, วิดีโอ YouTube) — "รอการตรวจสอบ" ตั้งเผยแพร่อัตโนมัติ ระหว่างนี้แก้อะไรใน Dashboard ไม่ได้
 - **v1.0.1 พร้อมอัปโหลด** `dist/thai-pdpa-guard-1.0.1.zip` (ตรวจในไฟล์แล้ว): หน้า welcome + ปุ่ม LINE, แก้บั๊กกล่องร่าง AI, LICENSE, ชื่อ/คำอธิบายสั้นใหม่, ปุ่ม "วิธีใช้และติดต่อ" ใน popup
 
 ### ⬜ ยังไม่ได้ทำ
@@ -121,7 +122,7 @@ launch config ชื่อ `pdpa-playground` อยู่ที่ `../.claude/l
 
 ## 6. ขั้นตอนถัดไป (เรียงลำดับ)
 
-1. **เช็คสถานะรีวิว** ใน Dashboard/อีเมล — ผ่านแล้ว → อัปโหลด v1.0.1 ตาม "ขั้นอัปโหลด" ข้างบน
+1. **รีวิว listing ผ่านแล้ว** → ผู้ใช้อัปโหลด v1.0.1 ตาม "ขั้นอัปโหลด" ข้างบน (+ เช็กช่องหน้าแรก/support URL ใน Dashboard)
 2. หลัง v1.0.1 ขึ้น: ทดสอบหน้า welcome (ติดตั้งใหม่), ปุ่ม LINE, และกล่องร่าง Gmail บน Gemini จริง
 3. **โปรโมท 10 คนแรก** ด้วย `store/PROMO-POSTS.md` ชุดที่ 1 (เล่าได้ว่าค้น "pdpa" เจออันดับ 1)
 4. เปิดใช้ monitor (ดูหัวข้อ "เปิดใช้ monitor")
