@@ -2,7 +2,7 @@ import { scan } from '../src/core/scanner.js';
 import { createSession, mask } from '../src/core/mapper.js';
 
 export const LINKS = {
-  line: '',
+  line: 'https://line.me/R/ti/p/@672wktjq',
   site: 'https://pdpa.tm8labs.com/',
   email: 'support@tm8labs.com'
 };
