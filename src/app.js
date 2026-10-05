@@ -2,8 +2,8 @@ import { scanTail, mergeFindings, excludePlaceholders } from './core/scanner.js'
 import { AUTO_MASK_THRESHOLD } from './core/types.js';
 import { getSettings, onSettingsChanged, bumpStats } from './core/settings.js';
 import { loadSession, saveSession, mask, unmask, hasPlaceholder } from './core/mapper.js';
-import { siteFor, findEditors, findSendButton } from './sites/index.js';
-import { getText, setText, replaceInTextNodes } from './sites/editor.js';
+import { siteFor, findEditors, findSendButton, inAiResponse, aiResponseFields } from './sites/index.js';
+import { getText, setText, replaceInTextNodes, replaceInFieldValue } from './sites/editor.js';
 import { Overlay } from './ui/overlay.js';
 
 const SCAN_DEBOUNCE_MS = 150;
@@ -205,14 +205,18 @@ function attachAll() {
 }
 
 function isSkippable(el) {
-  return el.closest('[data-tpg-ui]') !== null
-    || el.isContentEditable
-    || el.closest('[contenteditable="true"], [role="textbox"]') !== null;
+  if (el.closest('[data-tpg-ui]')) return true;
+  if (inAiResponse(site, el)) return false;
+  return el.isContentEditable || el.closest('[contenteditable="true"], [role="textbox"]') !== null;
 }
 
 function runUnmask() {
   if (!session || !Object.keys(session.reverse).length) return;
-  replaceInTextNodes(document.body, (s) => (hasPlaceholder(s) ? unmask(s, session) : s), isSkippable);
+  const replacer = (s) => (hasPlaceholder(s) ? unmask(s, session) : s);
+  replaceInTextNodes(document.body, replacer, isSkippable);
+  for (const field of aiResponseFields(site)) {
+    if (field !== document.activeElement) replaceInFieldValue(field, replacer);
+  }
 }
 
 function scheduleUnmask() {

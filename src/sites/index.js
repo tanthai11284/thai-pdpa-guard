@@ -6,21 +6,24 @@ const SITES = [
     hosts: ['chatgpt.com', 'chat.openai.com'],
     editor: '#prompt-textarea, #mobile-composer-prompt, form textarea, form [contenteditable="true"]',
     send: 'button[data-testid="send-button"], button[aria-label="Send message"], button[aria-label="Send prompt"], form button[type="submit"]',
-    response: '[data-message-author-role="assistant"], [data-message-author-role="user"], article'
+    response: '[data-message-author-role="assistant"], [data-message-author-role="user"], article',
+    ai: '[data-message-author-role="assistant"]'
   },
   {
     id: 'claude',
     hosts: ['claude.ai'],
     editor: 'div[contenteditable="true"].ProseMirror, fieldset [contenteditable="true"], [contenteditable="true"]',
     send: 'button[aria-label="Send message"], button[aria-label="Send Message"], fieldset button[type="submit"]',
-    response: '.font-claude-message, .font-claude-response, [data-testid="assistant-message"], [data-testid="user-message"], .font-user-message'
+    response: '.font-claude-message, .font-claude-response, [data-testid="assistant-message"], [data-testid="user-message"], .font-user-message',
+    ai: '.font-claude-message, .font-claude-response, [data-testid="assistant-message"]'
   },
   {
     id: 'gemini',
     hosts: ['gemini.google.com'],
     editor: 'rich-textarea .ql-editor, .ql-editor[contenteditable="true"], [contenteditable="true"]',
     send: 'button.send-button, button[aria-label="Send message"], button[aria-label="ส่งข้อความ"], button[mattooltip="Send message"]',
-    response: 'model-response, message-content, .model-response-text, user-query, .query-text'
+    response: 'model-response, message-content, .model-response-text, user-query, .query-text',
+    ai: 'model-response'
   }
 ];
 
@@ -29,8 +32,20 @@ const GENERIC = {
   hosts: [],
   editor: EDITOR_GENERIC,
   send: 'button[type="submit"], button[aria-label*="send" i]',
-  response: 'main, article'
+  response: 'main, article',
+  ai: 'model-response, [data-message-author-role="assistant"]'
 };
+
+const FIELD_SELECTOR = 'textarea, input:not([type]), input[type="text"], input[type="email"], input[type="search"]';
+
+export function inAiResponse(site, el) {
+  return Boolean(site.ai && el.closest(site.ai));
+}
+
+export function aiResponseFields(site, root = document) {
+  if (!site.ai) return [];
+  return [...root.querySelectorAll(site.ai)].flatMap((c) => [...c.querySelectorAll(FIELD_SELECTOR)]);
+}
 
 export function siteFor(host = location.host) {
   return SITES.find((s) => s.hosts.some((h) => host === h || host.endsWith(`.${h}`))) ?? GENERIC;
@@ -41,7 +56,7 @@ export function findEditors(site, root = document) {
   const out = [];
   for (const sel of [site.editor, EDITOR_GENERIC]) {
     for (const el of root.querySelectorAll(sel)) {
-      if (seen.has(el) || !isEditorCandidate(el)) continue;
+      if (seen.has(el) || !isEditorCandidate(el) || inAiResponse(site, el)) continue;
       seen.add(el);
       out.push(el);
     }

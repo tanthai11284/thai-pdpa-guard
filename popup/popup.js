@@ -22,4 +22,8 @@ document.getElementById('options').addEventListener('click', () => {
   chrome.runtime.openOptionsPage();
 });
 
+document.getElementById('help').addEventListener('click', () => {
+  chrome.tabs.create({ url: chrome.runtime.getURL('welcome/welcome.html') });
+});
+
 render();

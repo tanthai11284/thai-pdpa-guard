@@ -11,9 +11,12 @@ async function ensureDefaults() {
   if (Object.keys(patch).length) await chrome.storage.local.set(patch);
 }
 
-chrome.runtime.onInstalled.addListener(async () => {
+chrome.runtime.onInstalled.addListener(async (details) => {
   await chrome.storage.session.setAccessLevel(SESSION_ACCESS);
   await ensureDefaults();
+  if (details.reason === 'install') {
+    chrome.tabs.create({ url: chrome.runtime.getURL('welcome/welcome.html') });
+  }
 });
 
 chrome.runtime.onStartup.addListener(async () => {

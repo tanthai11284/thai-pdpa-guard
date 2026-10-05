@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { deflateRawSync } from 'node:zlib';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const INCLUDE = ['manifest.json', 'sw.js', 'src', 'popup', 'options', '_locales', 'assets'];
+const INCLUDE = ['manifest.json', 'sw.js', 'src', 'popup', 'options', 'welcome', '_locales', 'assets', 'LICENSE'];
 const manifest = JSON.parse(readFileSync(join(ROOT, 'manifest.json'), 'utf8'));
 const OUT_DIR = join(ROOT, 'dist');
 const OUT = join(OUT_DIR, `thai-pdpa-guard-${manifest.version}.zip`);

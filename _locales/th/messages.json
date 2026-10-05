@@ -1,50 +1,201 @@
 {
-  "extName": { "message": "Thai PDPA Guard" },
-  "extDesc": { "message": "ตรวจจับเลขบัตรประชาชน เบอร์โทร ชื่อ ที่อยู่แบบไทย แล้วปิดบังก่อนส่งให้ ChatGPT ทำงานในเครื่อง 100%" },
+  "extName": {
+    "message": "Thai PDPA Guard"
+  },
+  "extDesc": {
+    "message": "ตรวจจับเลขบัตรประชาชน เบอร์โทร ชื่อ ที่อยู่แบบไทย แล้วปิดบังก่อนส่งให้ ChatGPT ทำงานในเครื่อง 100%"
+  },
   "foundItems": {
     "message": "พบข้อมูลส่วนบุคคล $COUNT$ รายการ",
-    "placeholders": { "count": { "content": "$1" } }
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
-  "maskAll": { "message": "ปิดบังทั้งหมด" },
-  "viewList": { "message": "ดูรายการ" },
-  "skipOnce": { "message": "ข้ามครั้งนี้" },
-  "probablyPII": { "message": "น่าจะใช่" },
-  "clearData": { "message": "ล้างข้อมูลทั้งหมดเดี๋ยวนี้" },
-  "clearedData": { "message": "ล้างข้อมูลแล้ว" },
-  "maskSelected": { "message": "ปิดบังที่เลือก" },
+  "maskAll": {
+    "message": "ปิดบังทั้งหมด"
+  },
+  "viewList": {
+    "message": "ดูรายการ"
+  },
+  "skipOnce": {
+    "message": "ข้ามครั้งนี้"
+  },
+  "probablyPII": {
+    "message": "น่าจะใช่"
+  },
+  "clearData": {
+    "message": "ล้างข้อมูลทั้งหมดเดี๋ยวนี้"
+  },
+  "clearedData": {
+    "message": "ล้างข้อมูลแล้ว"
+  },
+  "maskSelected": {
+    "message": "ปิดบังที่เลือก"
+  },
   "maskedNotice": {
     "message": "ปิดบังไปแล้ว $COUNT$ รายการ",
-    "placeholders": { "count": { "content": "$1" } }
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
   },
-  "blockedNotice": { "message": "ปุ่มส่งถูกปิดจนกว่าจะจัดการข้อมูลส่วนบุคคล" },
-  "closeOverlay": { "message": "ปิดแถบแจ้งเตือน" },
-  "modeLabel": { "message": "โหมดการทำงาน" },
-  "modeWarn": { "message": "แจ้งเตือนอย่างเดียว (ผู้ใช้กดปิดบังเอง)" },
-  "modeAuto": { "message": "ปิดบังอัตโนมัติเมื่อมั่นใจสูง" },
-  "modeBlock": { "message": "ปิดปุ่มส่งจนกว่าจะจัดการ (สำหรับองค์กร)" },
-  "detectorsLabel": { "message": "ประเภทข้อมูลที่ตรวจจับ" },
-  "nanoLabel": { "message": "ใช้ Gemini Nano ช่วยยืนยันชื่อและที่อยู่" },
-  "nanoReady": { "message": "พร้อมใช้งาน" },
-  "nanoUnsupported": { "message": "เครื่องไม่รองรับ (ต้องการ RAM 16GB, พื้นที่ว่าง 22GB)" },
-  "nanoOff": { "message": "ปิดอยู่" },
-  "nanoDownloading": { "message": "กำลังดาวน์โหลดโมเดล" },
-  "nanoDownloadable": { "message": "เครื่องรองรับ แต่ยังไม่ได้ดาวน์โหลดโมเดล (ประมาณ 2–4 GB)" },
-  "nanoWarmUp": { "message": "ดาวน์โหลดโมเดลตอนนี้" },
-  "nanoStatusLabel": { "message": "สถานะ" },
-  "localeLabel": { "message": "ภาษา" },
-  "localeAuto": { "message": "ตามเบราว์เซอร์" },
-  "saved": { "message": "บันทึกแล้ว" },
-  "openOptions": { "message": "ตั้งค่า" },
-  "statsTitle": { "message": "สถิติการปิดบัง (ตัวเลขเท่านั้น)" },
-  "statsTotal": { "message": "ปิดบังทั้งหมด" },
-  "privacyNote": { "message": "ทุกอย่างประมวลผลในเครื่อง ไม่มีการส่งข้อมูลออกไปที่ใด" },
-  "type_thai_id": { "message": "เลขบัตรประชาชน / ผู้เสียภาษี" },
-  "type_thai_phone": { "message": "เบอร์โทรศัพท์" },
-  "type_email": { "message": "อีเมล" },
-  "type_credit_card": { "message": "บัตรเครดิต" },
-  "type_bank_account": { "message": "เลขบัญชีธนาคาร" },
-  "type_thai_plate": { "message": "ทะเบียนรถ" },
-  "type_thai_address": { "message": "ที่อยู่" },
-  "type_thai_name": { "message": "ชื่อบุคคล" },
-  "type_passport": { "message": "หนังสือเดินทาง" }
+  "blockedNotice": {
+    "message": "ปุ่มส่งถูกปิดจนกว่าจะจัดการข้อมูลส่วนบุคคล"
+  },
+  "closeOverlay": {
+    "message": "ปิดแถบแจ้งเตือน"
+  },
+  "modeLabel": {
+    "message": "โหมดการทำงาน"
+  },
+  "modeWarn": {
+    "message": "แจ้งเตือนอย่างเดียว (ผู้ใช้กดปิดบังเอง)"
+  },
+  "modeAuto": {
+    "message": "ปิดบังอัตโนมัติเมื่อมั่นใจสูง"
+  },
+  "modeBlock": {
+    "message": "ปิดปุ่มส่งจนกว่าจะจัดการ (สำหรับองค์กร)"
+  },
+  "detectorsLabel": {
+    "message": "ประเภทข้อมูลที่ตรวจจับ"
+  },
+  "nanoLabel": {
+    "message": "ใช้ Gemini Nano ช่วยยืนยันชื่อและที่อยู่"
+  },
+  "nanoReady": {
+    "message": "พร้อมใช้งาน"
+  },
+  "nanoUnsupported": {
+    "message": "เครื่องไม่รองรับ (ต้องการ RAM 16GB, พื้นที่ว่าง 22GB)"
+  },
+  "nanoOff": {
+    "message": "ปิดอยู่"
+  },
+  "nanoDownloading": {
+    "message": "กำลังดาวน์โหลดโมเดล"
+  },
+  "nanoDownloadable": {
+    "message": "เครื่องรองรับ แต่ยังไม่ได้ดาวน์โหลดโมเดล (ประมาณ 2–4 GB)"
+  },
+  "nanoWarmUp": {
+    "message": "ดาวน์โหลดโมเดลตอนนี้"
+  },
+  "nanoStatusLabel": {
+    "message": "สถานะ"
+  },
+  "localeLabel": {
+    "message": "ภาษา"
+  },
+  "localeAuto": {
+    "message": "ตามเบราว์เซอร์"
+  },
+  "saved": {
+    "message": "บันทึกแล้ว"
+  },
+  "openOptions": {
+    "message": "ตั้งค่า"
+  },
+  "statsTitle": {
+    "message": "สถิติการปิดบัง (ตัวเลขเท่านั้น)"
+  },
+  "statsTotal": {
+    "message": "ปิดบังทั้งหมด"
+  },
+  "privacyNote": {
+    "message": "ทุกอย่างประมวลผลในเครื่อง ไม่มีการส่งข้อมูลออกไปที่ใด"
+  },
+  "type_thai_id": {
+    "message": "เลขบัตรประชาชน / ผู้เสียภาษี"
+  },
+  "type_thai_phone": {
+    "message": "เบอร์โทรศัพท์"
+  },
+  "type_email": {
+    "message": "อีเมล"
+  },
+  "type_credit_card": {
+    "message": "บัตรเครดิต"
+  },
+  "type_bank_account": {
+    "message": "เลขบัญชีธนาคาร"
+  },
+  "type_thai_plate": {
+    "message": "ทะเบียนรถ"
+  },
+  "type_thai_address": {
+    "message": "ที่อยู่"
+  },
+  "type_thai_name": {
+    "message": "ชื่อบุคคล"
+  },
+  "type_passport": {
+    "message": "หนังสือเดินทาง"
+  },
+  "welcomeTitle": {
+    "message": "ติดตั้ง Thai PDPA Guard เรียบร้อยแล้ว"
+  },
+  "welcomeLead": {
+    "message": "ตัวช่วยปิดบังข้อมูลส่วนบุคคลก่อนส่งให้ AI ทำงานในเครื่องของคุณทั้งหมด"
+  },
+  "welcomeHowTitle": {
+    "message": "ใช้งานยังไง"
+  },
+  "welcomeStep1Title": {
+    "message": "1. พิมพ์หรือวางตามปกติ"
+  },
+  "welcomeStep1": {
+    "message": "ใน ChatGPT, Claude หรือ Gemini ถ้าเจอเลขบัตร ชื่อ เบอร์ ที่อยู่ จะมีแถบสีส้มเตือนเหนือกล่องข้อความ"
+  },
+  "welcomeStep2Title": {
+    "message": "2. กดปิดบังทั้งหมด"
+  },
+  "welcomeStep2": {
+    "message": "ข้อมูลจริงถูกแทนด้วยตัวแทนอย่าง [บุคคล_1] ก่อนส่ง AI ยังเข้าใจและตอบได้ตามปกติ"
+  },
+  "welcomeStep3Title": {
+    "message": "3. อ่านคำตอบได้เลย"
+  },
+  "welcomeStep3": {
+    "message": "คำตอบที่มีตัวแทนจะแสดงเป็นข้อมูลจริงบนจอของคุณเอง โดยไม่ส่งข้อมูลออกไปไหน"
+  },
+  "welcomeTryTitle": {
+    "message": "ลองพิมพ์ดูตรงนี้"
+  },
+  "welcomeTryHint": {
+    "message": "แก้ข้อความในกล่องได้ ดูว่าระบบจับอะไรได้บ้าง (ตัวอย่างเป็นข้อมูลสมมติ)"
+  },
+  "welcomeTryOut": {
+    "message": "สิ่งที่จะถูกส่งให้ AI"
+  },
+  "welcomeTryLocal": {
+    "message": "การตรวจในหน้านี้ทำในเครื่องของคุณ ไม่มีการส่งข้อมูลไปที่ใด"
+  },
+  "welcomeTrySample": {
+    "message": "ช่วยร่างข้อความติดตามยอดค้างชำระ ลูกค้าชื่อนายสมชาย ใจดี โทร 0812345678 อีเมล somchai@example.com"
+  },
+  "welcomeOpenTitle": {
+    "message": "เปิดเว็บ AI แล้วลองใช้จริง"
+  },
+  "welcomeContactTitle": {
+    "message": "ติดตามข่าวและแจ้งปัญหา"
+  },
+  "welcomeContactText": {
+    "message": "พบปัญหา อยากให้รองรับเว็บอื่น หรืออยากใช้ทั้งองค์กร ติดต่อเราได้ ทุกข้อความช่วยให้ส่วนขยายดีขึ้น"
+  },
+  "welcomeLine": {
+    "message": "เพิ่มเพื่อน LINE"
+  },
+  "welcomeSite": {
+    "message": "เว็บไซต์"
+  },
+  "welcomeMail": {
+    "message": "อีเมลถึงเรา"
+  },
+  "welcomeHelp": {
+    "message": "วิธีใช้และติดต่อ"
+  }
 }

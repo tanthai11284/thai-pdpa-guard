@@ -24,7 +24,9 @@
   <div class="ce ProseMirror" contenteditable="true" role="textbox"></div>
 
   <button id="reply">จำลองคำตอบ AI (streaming)</button>
+  <button id="draft">จำลองกล่องร่าง Gmail ที่ AI สร้าง</button>
   <div id="log" class="reply" aria-live="polite"></div>
+  <div id="draftBox"></div>
 
   <script>
     const store = { local: {}, session: {} };
@@ -49,6 +51,16 @@
     document.getElementById('f').addEventListener('submit', (e) => {
       e.preventDefault();
       document.getElementById('log').textContent = 'ส่งแล้ว: ' + document.getElementById('ta').value;
+    });
+    document.getElementById('draft').addEventListener('click', () => {
+      const box = document.getElementById('draftBox');
+      box.innerHTML = '';
+      const card = document.createElement('model-response');
+      card.innerHTML = '<p>ร่างอีเมลให้แล้วครับ:</p>'
+        + '<input id="dSubject" style="width:100%" value="ติดตามการชำระเงิน - คุณ [บุคคล_1]">'
+        + '<textarea id="dBody" style="width:100%;min-height:80px">เรียน คุณ [บุคคล_1]\nกรุณาติดต่อกลับที่ [เบอร์_1]</textarea>'
+        + '<div id="dRich" contenteditable="true" style="border:1px solid #999;padding:6px">ส่งถึง [อีเมล_1]</div>';
+      box.appendChild(card);
     });
     document.getElementById('reply').addEventListener('click', () => {
       const text = 'แนะนำให้ติดต่อ[บุคคล_1] ที่ [เบอร์_1] เพื่อยืนยัน [บัตรปชช_1] และส่งไปที่ [อีเมล_1] ครับ';

@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SHIP_DIRS = ['src', 'popup', 'options'];
+const SHIP_DIRS = ['src', 'popup', 'options', 'welcome'];
 const SHIP_FILES = ['sw.js'];
 const FORBIDDEN = [
   /\bfetch\s*\(/,

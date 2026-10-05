@@ -13,7 +13,10 @@ createServer(async (req, res) => {
   const file = normalize(join(ROOT, path));
   if (!file.startsWith(ROOT)) { res.writeHead(403); res.end(); return; }
   try {
-    const body = await readFile(file);
+    let body = await readFile(file);
+    if (extname(file) === '.html' && url.searchParams.has('stub')) {
+      body = Buffer.from(body.toString('utf8').replace('<head>', '<head><script src="/dev/chrome-stub.js"></script>'));
+    }
     res.writeHead(200, { 'content-type': TYPES[extname(file)] ?? 'application/octet-stream', 'cache-control': 'no-store' });
     res.end(body);
   } catch {

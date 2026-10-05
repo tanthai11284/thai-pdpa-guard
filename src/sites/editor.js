@@ -47,6 +47,19 @@ function normalize(s) {
   return s.replace(/\s+/g, ' ').trim();
 }
 
+const inputSetter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set;
+
+export function replaceInFieldValue(el, replacer) {
+  const next = replacer(el.value);
+  if (next === el.value) return false;
+  const setter = el.tagName === 'TEXTAREA' ? textareaSetter : inputSetter;
+  if (setter) setter.call(el, next);
+  else el.value = next;
+  el.dispatchEvent(new Event('input', { bubbles: true }));
+  el.dispatchEvent(new Event('change', { bubbles: true }));
+  return true;
+}
+
 export function setText(el, text) {
   if (isTextarea(el)) setTextarea(el, text);
   else setContentEditable(el, text);

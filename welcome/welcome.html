@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thai PDPA Guard</title>
+  <link rel="stylesheet" href="welcome.css">
+</head>
+<body>
+  <main>
+    <header>
+      <img src="../assets/icon-128.png" width="72" height="72" alt="">
+      <div>
+        <h1 data-i18n="welcomeTitle"></h1>
+        <p class="lead" data-i18n="welcomeLead"></p>
+      </div>
+    </header>
+
+    <section>
+      <h2 data-i18n="welcomeHowTitle"></h2>
+      <ol class="steps">
+        <li><b data-i18n="welcomeStep1Title"></b><span data-i18n="welcomeStep1"></span></li>
+        <li><b data-i18n="welcomeStep2Title"></b><span data-i18n="welcomeStep2"></span></li>
+        <li><b data-i18n="welcomeStep3Title"></b><span data-i18n="welcomeStep3"></span></li>
+      </ol>
+    </section>
+
+    <section class="try">
+      <h2 data-i18n="welcomeTryTitle"></h2>
+      <p class="muted" data-i18n="welcomeTryHint"></p>
+      <label for="sample" class="sr" data-i18n="welcomeTryTitle"></label>
+      <textarea id="sample" rows="3"></textarea>
+      <div id="result" aria-live="polite">
+        <p id="count" class="count"></p>
+        <p class="out-label" data-i18n="welcomeTryOut"></p>
+        <p id="masked" class="masked"></p>
+      </div>
+      <p class="muted small" data-i18n="welcomeTryLocal"></p>
+    </section>
+
+    <section>
+      <h2 data-i18n="welcomeOpenTitle"></h2>
+      <div class="sites">
+        <a href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT</a>
+        <a href="https://claude.ai/new" target="_blank" rel="noopener">Claude</a>
+        <a href="https://gemini.google.com/app" target="_blank" rel="noopener">Gemini</a>
+      </div>
+    </section>
+
+    <section class="contact">
+      <h2 data-i18n="welcomeContactTitle"></h2>
+      <p data-i18n="welcomeContactText"></p>
+      <div class="actions">
+        <a id="line" class="btn line" target="_blank" rel="noopener" hidden data-i18n="welcomeLine"></a>
+        <a id="site" class="btn" target="_blank" rel="noopener" data-i18n="welcomeSite"></a>
+        <a id="mail" class="btn ghost" data-i18n="welcomeMail"></a>
+      </div>
+    </section>
+
+    <footer>
+      <a href="../options/options.html" data-i18n="openOptions"></a>
+      <span>·</span>
+      <span>TM8 Labs</span>
+    </footer>
+  </main>
+  <script type="module" src="welcome.js"></script>
+</body>
+</html>
