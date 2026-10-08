@@ -1,9 +1,9 @@
 import { scanTail, mergeFindings, excludePlaceholders } from './core/scanner.js';
 import { AUTO_MASK_THRESHOLD } from './core/types.js';
 import { getSettings, onSettingsChanged, bumpStats } from './core/settings.js';
-import { loadSession, saveSession, mask, unmask, hasPlaceholder } from './core/mapper.js';
+import { loadSession, saveSession, mask, unmask, unmaskAcross, hasPlaceholder } from './core/mapper.js';
 import { siteFor, findEditors, findSendButton, inAiResponse, aiResponseFields } from './sites/index.js';
-import { getText, setText, replaceInTextNodes, replaceInFieldValue } from './sites/editor.js';
+import { getText, setText, replaceInTextNodes, replaceAcrossTextNodes, replaceInFieldValue } from './sites/editor.js';
 import { Overlay } from './ui/overlay.js';
 
 const SCAN_DEBOUNCE_MS = 150;
@@ -214,6 +214,7 @@ function runUnmask() {
   if (!session || !Object.keys(session.reverse).length) return;
   const replacer = (s) => (hasPlaceholder(s) ? unmask(s, session) : s);
   replaceInTextNodes(document.body, replacer, isSkippable);
+  replaceAcrossTextNodes(document.body, (values) => unmaskAcross(values, session), isSkippable);
   for (const field of aiResponseFields(site)) {
     if (field !== document.activeElement) replaceInFieldValue(field, replacer);
   }

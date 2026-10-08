@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createSession, mask, unmask, placeholderFor, hasPlaceholder } from '../src/core/mapper.js';
+import { createSession, mask, unmask, unmaskAcross, placeholderFor, hasPlaceholder } from '../src/core/mapper.js';
 import { scan } from '../src/core/scanner.js';
 import { synthThaiID, formatThaiID, rng } from './fixtures/generate.js';
 
@@ -63,4 +63,44 @@ test('mask skips overlapping findings and preserves surrounding text exactly', (
 test('hasPlaceholder', () => {
   assert.equal(hasPlaceholder('x [ที่อยู่_2] y'), true);
   assert.equal(hasPlaceholder('x [foo_2] y'), false);
+});
+
+test('unmask handles placeholders without brackets (Gemini drops them)', () => {
+  const session = createSession(1);
+  placeholderFor({ type: 'thai_name', value: 'นายสมชาย ใจดี' }, session);
+  placeholderFor({ type: 'thai_phone', value: '0812345678' }, session);
+  assert.equal(unmask('ชื่อ: บุคคล_1', session), 'ชื่อ: นายสมชาย ใจดี');
+  assert.equal(unmask('ติดต่อบุคคล_1 ที่เบอร์_1', session), 'ติดต่อนายสมชาย ใจดี ที่0812345678');
+  assert.equal(unmask('ชื่อ: บุคคล\_1', session), 'ชื่อ: นายสมชาย ใจดี');
+  assert.equal(unmask('[บุคคล_1] และ บุคคล_1', session), 'นายสมชาย ใจดี และ นายสมชาย ใจดี');
+  assert.equal(hasPlaceholder('ชื่อ: บุคคล_1'), true);
+});
+
+test('bare unmask leaves unknown keys, longer numbers and plain words alone', () => {
+  const session = createSession(1);
+  placeholderFor({ type: 'thai_name', value: 'นายสมชาย ใจดี' }, session);
+  for (const t of ['บุคคล_2', 'บุคคล_10', 'บุคคล 1', 'บุคคลทั่วไป', 'อีเมล_1', 'snake_case_1']) {
+    assert.equal(unmask(t, session), t, t);
+  }
+});
+
+test('unmaskAcross joins placeholders split over streamed word spans (ChatGPT)', () => {
+  const session = createSession(1);
+  placeholderFor({ type: 'thai_name', value: 'นายสมชาย ใจดี' }, session);
+  placeholderFor({ type: 'thai_phone', value: '0812345678' }, session);
+  assert.deepEqual(unmaskAcross(['[บุคคล', '_', '1]'], session), ['นายสมชาย ใจดี', '', '']);
+  assert.deepEqual(unmaskAcross(['ให้ ', '[บุคคล', '_', '1]', ' แล้ว'], session), ['ให้ ', 'นายสมชาย ใจดี', '', '', ' แล้ว']);
+  assert.deepEqual(unmaskAcross(['ก [บุ', 'คคล_1] ข [เบอร์_1] ค'], session), ['ก นายสมชาย ใจดี', ' ข 0812345678 ค']);
+  assert.deepEqual(unmaskAcross(['บุคคล', '_1 และ ', 'เบอร์_', '1'], session), ['นายสมชาย ใจดี', ' และ ', '0812345678', '']);
+  assert.deepEqual(unmaskAcross(['', '[บุคคล_1]', ''], session), ['', 'นายสมชาย ใจดี', '']);
+});
+
+test('unmaskAcross returns the same array when nothing known is split', () => {
+  const session = createSession(1);
+  placeholderFor({ type: 'thai_name', value: 'นายสมชาย ใจดี' }, session);
+  const v = ['[บุคคล', '_', '2]'];
+  assert.equal(unmaskAcross(v, session), v);
+  const w = ['ข้อความ', 'ปกติ'];
+  assert.equal(unmaskAcross(w, session), w);
+  assert.equal(unmaskAcross(v, createSession(2)), v);
 });

@@ -4,10 +4,11 @@ const SITES = [
   {
     id: 'chatgpt',
     hosts: ['chatgpt.com', 'chat.openai.com'],
-    editor: '#prompt-textarea, #mobile-composer-prompt, form textarea, form [contenteditable="true"]',
+    editor: '#prompt-textarea, #mobile-composer-prompt, form .ProseMirror[contenteditable="true"], form textarea, form [contenteditable="true"]',
     send: 'button[data-testid="send-button"], button[aria-label="Send message"], button[aria-label="Send prompt"], form button[type="submit"]',
-    response: '[data-message-author-role="assistant"], [data-message-author-role="user"], article',
-    ai: '[data-message-author-role="assistant"]'
+    response: '[data-message-author-role="assistant"], [data-message-author-role="user"], article, [data-markdown-text-style="assistant-message"], [data-dil-message-id]',
+    // Oct 2026 redesign dropped data-message-author-role; assistant text now lives under data-markdown-text-style.
+    ai: '[data-message-author-role="assistant"], [data-markdown-text-style="assistant-message"]'
   },
   {
     id: 'claude',
@@ -33,7 +34,7 @@ const GENERIC = {
   editor: EDITOR_GENERIC,
   send: 'button[type="submit"], button[aria-label*="send" i]',
   response: 'main, article',
-  ai: 'model-response, [data-message-author-role="assistant"]'
+  ai: 'model-response, [data-message-author-role="assistant"], [data-markdown-text-style="assistant-message"]'
 };
 
 const FIELD_SELECTOR = 'textarea, input:not([type]), input[type="text"], input[type="email"], input[type="search"]';
