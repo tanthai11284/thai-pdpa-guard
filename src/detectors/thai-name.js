@@ -62,8 +62,11 @@ export function detect(text) {
       const last = run2 ? takeName(run2[0], NONE) : '';
       if (last) { end += 1 + last.length; score += 0.15; reasons.push('surname'); }
     }
+    // Keep the polite "คุณ" outside the placeholder: models add their own "คุณ" in front of the
+    // placeholder, which would otherwise unmask to "คุณคุณสมหญิง".
+    const start = title === 'คุณ' ? nameStart : m.index;
     out.push({
-      type, value: text.slice(m.index, end), start: m.index, end,
+      type, value: text.slice(start, end), start, end,
       confidence: clamp01(score), reason: reasons.join('+')
     });
   }

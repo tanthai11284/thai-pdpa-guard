@@ -200,5 +200,9 @@
   },
   "brandName": {
     "message": "Thai PDPA Guard"
+  },
+  "maskNote": {
+    "message": "(Note from Thai PDPA Guard: words in square brackets are placeholders for real data the user masked for privacy. Treat them as the real data, work as usual, and write the same placeholders, brackets included, in your reply.)",
+    "description": "Line appended to masked messages so the AI understands the placeholders"
   }
 }

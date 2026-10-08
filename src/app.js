@@ -1,14 +1,15 @@
 import { scanTail, mergeFindings, excludePlaceholders } from './core/scanner.js';
 import { AUTO_MASK_THRESHOLD } from './core/types.js';
 import { getSettings, onSettingsChanged, bumpStats } from './core/settings.js';
-import { loadSession, saveSession, mask, unmask, unmaskAcross, hasPlaceholder } from './core/mapper.js';
+import { loadSession, saveSession, mask, unmask, unmaskAcross, hasPlaceholder, withMaskNote, stripMaskNote } from './core/mapper.js';
 import { siteFor, findEditors, findSendButton, inAiResponse, aiResponseFields } from './sites/index.js';
-import { getText, setText, replaceInTextNodes, replaceAcrossTextNodes, replaceInFieldValue } from './sites/editor.js';
+import { getText, setText, replaceInTextNodes, replaceAcrossTextNodes, replaceInFieldValue, MAYBE_PLACEHOLDER } from './sites/editor.js';
 import { Overlay } from './ui/overlay.js';
 
 const SCAN_DEBOUNCE_MS = 150;
 const UNMASK_DEBOUNCE_MS = 120;
 const t = (key, subs) => chrome.i18n.getMessage(key, subs) || key;
+const MASK_NOTE = chrome.i18n.getMessage('maskNote');
 
 const site = siteFor();
 const overlay = new Overlay();
@@ -116,8 +117,9 @@ async function applyMask(editor, selected, remaining) {
   if (!selected.length) return;
   const text = getText(editor);
   const { masked, applied } = mask(text, selected, session);
-  if (masked !== text) {
-    setText(editor, masked);
+  const out = applied.length ? withMaskNote(masked, MASK_NOTE) : masked;
+  if (out !== text) {
+    setText(editor, out);
     await saveSession(session);
     const counts = {};
     for (const f of applied) counts[f.type] = (counts[f.type] ?? 0) + 1;
@@ -212,8 +214,11 @@ function isSkippable(el) {
 
 function runUnmask() {
   if (!session || !Object.keys(session.reverse).length) return;
-  const replacer = (s) => (hasPlaceholder(s) ? unmask(s, session) : s);
-  replaceInTextNodes(document.body, replacer, isSkippable);
+  const replacer = (s) => {
+    const v = stripMaskNote(s, MASK_NOTE);
+    return hasPlaceholder(v) ? unmask(v, session) : v;
+  };
+  replaceInTextNodes(document.body, replacer, isSkippable, (v) => MAYBE_PLACEHOLDER(v) || v.includes('PDPA Guard'));
   replaceAcrossTextNodes(document.body, (values) => unmaskAcross(values, session), isSkippable);
   for (const field of aiResponseFields(site)) {
     if (field !== document.activeElement) replaceInFieldValue(field, replacer);

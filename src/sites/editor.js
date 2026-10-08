@@ -65,7 +65,9 @@ export function setText(el, text) {
   else setContentEditable(el, text);
 }
 
-export function replaceInTextNodes(root, replacer, skip) {
+export const MAYBE_PLACEHOLDER = (v) => v.includes('[') || v.includes('【') || v.includes('_');
+
+export function replaceInTextNodes(root, replacer, skip, wanted = MAYBE_PLACEHOLDER) {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
       const p = node.parentElement;
@@ -73,8 +75,7 @@ export function replaceInTextNodes(root, replacer, skip) {
       if (skip(p)) return NodeFilter.FILTER_REJECT;
       const tag = p.tagName;
       if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'TEXTAREA') return NodeFilter.FILTER_REJECT;
-      const v = node.nodeValue;
-      return v.includes('[') || v.includes('【') || v.includes('_')
+      return wanted(node.nodeValue)
         ? NodeFilter.FILTER_ACCEPT
         : NodeFilter.FILTER_SKIP;
     }

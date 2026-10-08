@@ -93,6 +93,24 @@ export function unmaskAcross(values, session) {
   return out;
 }
 
+const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+// Whitespace-tolerant: sites re-wrap the message when they render it.
+function noteSource(note) {
+  return note.trim().split(/\s+/).map(escapeRe).join('\\s+');
+}
+
+/** Append the note that tells the AI what the placeholders are (once per message). */
+export function withMaskNote(text, note) {
+  if (!note || new RegExp(noteSource(note)).test(text)) return text;
+  return `${text.replace(/\s+$/, '')}\n\n${note}`;
+}
+
+/** Hide that note again when the sent message is shown in the chat. */
+export function stripMaskNote(text, note) {
+  return note ? text.replace(new RegExp(`\\s*${noteSource(note)}`, 'g'), '') : text;
+}
+
 export function hasPlaceholder(text) {
   PLACEHOLDER_RE.lastIndex = 0;
   BARE_PLACEHOLDER_RE.lastIndex = 0;

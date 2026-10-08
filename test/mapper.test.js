@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createSession, mask, unmask, unmaskAcross, placeholderFor, hasPlaceholder } from '../src/core/mapper.js';
+import { createSession, mask, unmask, unmaskAcross, placeholderFor, hasPlaceholder, withMaskNote, stripMaskNote } from '../src/core/mapper.js';
 import { scan } from '../src/core/scanner.js';
 import { synthThaiID, formatThaiID, rng } from './fixtures/generate.js';
 
@@ -103,4 +103,24 @@ test('unmaskAcross returns the same array when nothing known is split', () => {
   const w = ['ข้อความ', 'ปกติ'];
   assert.equal(unmaskAcross(w, session), w);
   assert.equal(unmaskAcross(v, createSession(2)), v);
+});
+
+test('"คุณ" stays outside the name placeholder so the reply does not read "คุณคุณ…"', () => {
+  const session = createSession(1);
+  const input = 'ส่งถึงคุณสมหญิง รักไทย และนายสมชาย ใจดี';
+  const { masked } = mask(input, scan(input), session);
+  assert.equal(masked, 'ส่งถึงคุณ[บุคคล_1] และ[บุคคล_2]');
+  assert.equal(unmask('เรียน คุณ[บุคคล_1]', session), 'เรียน คุณสมหญิง รักไทย');
+});
+
+const NOTE = '(หมายเหตุจาก Thai PDPA Guard: คำในวงเล็บเหลี่ยมคือตัวแทนข้อมูลจริง)';
+
+test('mask note is appended once and stripped again for display', () => {
+  const once = withMaskNote('ถึง [บุคคล_1]  ', NOTE);
+  assert.equal(once, `ถึง [บุคคล_1]\n\n${NOTE}`);
+  assert.equal(withMaskNote(once, NOTE), once);
+  assert.equal(stripMaskNote(once, NOTE), 'ถึง [บุคคล_1]');
+  assert.equal(stripMaskNote(NOTE.replace(/ /g, '\n'), NOTE), '');
+  assert.equal(stripMaskNote('ข้อความปกติ (หมายเหตุ)', NOTE), 'ข้อความปกติ (หมายเหตุ)');
+  assert.equal(withMaskNote('x', ''), 'x');
 });
